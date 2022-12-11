@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+
+  postgresql_db:
+    container_name: "postgresql_db"
+    image: postgres:11.17-alpine
+    restart: always
+    environment:
+      TZ: "Europe/Moscow"
+      POSTGRES_DB: "test_db"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "qwerty123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+
+    volumes:
+      - ../init postgres docker:/docker-entrypoint-initdb.d
+      - ../pg data:/var/lib/postgresql/data
+
+    ports:
+      - "5432:5432"
+
+  adminer:
+    container_name: "adminer"
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgresql_db
