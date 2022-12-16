@@ -10,5 +10,5 @@ answers = Table('answers', metadata,
                 Column('description', String()),
                 Column('create_datetime', DateTime()),
                 Column('task_id', Integer(), ForeignKey(tasks.c.id, ondelete='CASCADE')),
-                Column('create_id', Integer(), ForeignKey(users.c.id, ondelete='CASCADE')),
+                Column('creator_id', Integer(), ForeignKey(users.c.id, ondelete='CASCADE')),
                 )

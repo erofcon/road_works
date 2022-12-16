@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, Table, Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import MetaData, Table, Column, Integer, String, Boolean, DateTime, ForeignKey, Numeric
 
 from .companies import companies
 
@@ -12,10 +12,10 @@ users = Table('users', metadata,
               Column('password', String()),
               Column('name', String()),
               Column('surname', String()),
-              Column('phone_number', Integer()),
+              Column('phone_number', Numeric()),
               Column('email', String()),
               Column('is_super_user', Boolean(), default=False),
               Column('is_admin', Boolean(), default=False),
               Column('create_datetime', DateTime(), default=datetime.now()),
-              Column('related_company', Integer(), ForeignKey(companies.c.id, ondelete='CASCADE'))
+              Column('related_company', Integer(), ForeignKey(companies.c.id, ondelete='CASCADE')),
               )

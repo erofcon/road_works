@@ -7,7 +7,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from app.models import database, users, companies, groups, companies_groups, tasks, task_images, answers, answer_images, \
+from app.models import database, users, companies, groups, companies_groups, users_groups, tasks, task_images, answers, \
+    answer_images, \
     detections, detection_images, car_data, tracker_data
 
 sys.path.append(os.getcwd())
@@ -31,7 +32,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = [companies.metadata, users.metadata, groups.metadata, companies_groups.metadata, tasks.metadata,
+target_metadata = [companies.metadata, users.metadata, groups.metadata, companies_groups.metadata,
+                   users_groups.metadata, tasks.metadata,
                    task_images.metadata, answers.metadata, answer_images.metadata, detections.metadata,
                    detection_images.metadata, car_data.metadata, tracker_data.metadata]
 
