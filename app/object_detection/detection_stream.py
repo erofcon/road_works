@@ -8,7 +8,7 @@ from threading import Thread
 import cv2 as cv
 import numpy as np
 
-from sort import Sort
+from app.object_detection.sort import Sort
 
 
 class DetectionStream:

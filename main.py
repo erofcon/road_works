@@ -10,6 +10,7 @@ from app.routes import groups as groups_routes
 from app.routes import companies_groups as companies_groups_routes
 from app.routes import users_groups as users_groups_routes
 from app.routes import answers as answers_routes
+from app.routes import detections as detections_routes
 
 app = FastAPI()
 
@@ -23,6 +24,7 @@ app.include_router(router=groups_routes.router)
 app.include_router(router=companies_groups_routes.router)
 app.include_router(router=users_groups_routes.router)
 app.include_router(router=answers_routes.router)
+app.include_router(router=detections_routes.router)
 
 
 @app.on_event('startup')
