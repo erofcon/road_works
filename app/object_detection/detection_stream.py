@@ -8,12 +8,12 @@ from threading import Thread
 import cv2 as cv
 import numpy as np
 
-from app.object_detection.sort import Sort
+from .sort import Sort
 
 
 class DetectionStream:
 
-    def __init__(self, video_path: str, yolo_path: str = 'yolov4.weights', cfg_path: str = 'yolov4.cfg',
+    def __init__(self, video_path: str, yolo_path: str, cfg_path: str,
                  confidence_threshold: float = 0.5, nms_threshold: float = 0.4,
                  video_start_time: datetime = datetime.now(),
                  queue_size: int = 100):
@@ -32,7 +32,7 @@ class DetectionStream:
 
         self.model = cv.dnn_DetectionModel(self.net)
 
-        self.model.setInputParams(size=(640, 640), scale=1 / 255, swapRB=True)
+        self.model.setInputParams(size=(480, 480), scale=1 / 255, swapRB=True)
         self.sort = Sort(max_age=30, min_hits=3, iou_threshold=0.1)
 
         self.trackerIds = np.zeros(0)
@@ -103,9 +103,14 @@ class DetectionStream:
                     if self.frameCount != 0:
                         self.frameCount -= 1
 
+                    cv.imshow("frame", frame)
+                    if cv.waitKey(1) == ord('q'):
+                        break
+
             else:
                 time.sleep(0.1)
 
+        cv.destroyAllWindows()
         self.capture.release()
 
     def __tracking(self, frame, scores, boxes) -> None:
