@@ -1,8 +1,8 @@
 """initialize
 
-Revision ID: e86e04d79ee0
+Revision ID: 2298454a8986
 Revises: 
-Create Date: 2022-12-12 15:26:42.546901
+Create Date: 2022-12-24 10:57:06.484631
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e86e04d79ee0'
+revision = '2298454a8986'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,7 +32,7 @@ def upgrade() -> None:
     sa.Column('password', sa.String(), nullable=True),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('surname', sa.String(), nullable=True),
-    sa.Column('phone_number', sa.Numeric(), nullable=True),
+    sa.Column('phone_number', sa.String(), nullable=True),
     sa.Column('email', sa.String(), nullable=True),
     sa.Column('is_super_user', sa.Boolean(), nullable=True),
     sa.Column('is_admin', sa.Boolean(), nullable=True),
@@ -92,8 +92,8 @@ def upgrade() -> None:
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('create_datetime', sa.DateTime(), nullable=True),
     sa.Column('task_id', sa.Integer(), nullable=True),
-    sa.Column('create_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['create_id'], ['users.id'], ondelete='CASCADE'),
+    sa.Column('creator_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -107,7 +107,7 @@ def upgrade() -> None:
     op.create_table('detections',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('descriptions', sa.String(), nullable=True),
-    sa.Column('create_datetime', sa.String(), nullable=True),
+    sa.Column('create_datetime', sa.DateTime(), nullable=True),
     sa.Column('creator_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')

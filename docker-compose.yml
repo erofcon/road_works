@@ -5,7 +5,7 @@ services:
   redis_db:
     container_name: "redis_db"
     image: redis:alpine
-
+    restart: always
     ports:
       - "6379:6379"
 

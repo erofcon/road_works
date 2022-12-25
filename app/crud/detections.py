@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from sqlalchemy.exc import DataError
 from sqlalchemy.orm import Session
 
 from app.models import detections as detections_model
@@ -13,8 +14,11 @@ def create_detection(detection: detections_schemas.DetectionsCreate, db: Session
         creator_id=detection.creator_id
     )
 
-    db.add(query)
-    db.commit()
-    db.refresh(query)
+    try:
+        model = db.execute(query)
+        db.commit()
+        return model.inserted_primary_key[0]
+    except DataError:
+        return False
 
-    print(query)
+

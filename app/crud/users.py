@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
@@ -40,6 +42,7 @@ async def create_user(user: users_schemas.CreateUser) -> int | bool:
         email=user.email,
         is_super_user=user.is_super_user,
         is_admin=user.is_admin,
+        create_datetime=datetime.now(),
         related_company=user.related_company
     )
 

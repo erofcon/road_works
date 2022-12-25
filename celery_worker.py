@@ -1,7 +1,5 @@
 from datetime import datetime
-import asyncio
 
-from fastapi import Depends
 from celery import Celery
 from celery.utils.log import get_task_logger
 
@@ -20,13 +18,8 @@ class CeleryTaskBase(celery.Task):
         SyncSessionLocal.remove()
 
 
-
 @celery.task(base=CeleryTaskBase)
 def run_detection_with_xml(creator_id: int, video_path: str, xml_path: str, description: str | None):
-    # asyncio.run(
-    #     detection_with_xml.run_detection(creator_id=creator_id, video_path=video_path, xml_path=xml_path,
-    #                                      description=description))
-
     detection_with_xml.run_detection(creator_id=creator_id, video_path=video_path, xml_path=xml_path,
                                      description=description, db=SyncSessionLocal)
 
@@ -34,11 +27,6 @@ def run_detection_with_xml(creator_id: int, video_path: str, xml_path: str, desc
 @celery.task
 def run_detection_with_tracker(creator_id: int, video_path: str, video_start_datetime: datetime,
                                description: str | None):
-    # asyncio.run(
-    #     detection_with_tracker.run_detection(creator_id=creator_id, video_path=video_path,
-    #                                          video_start_datetime=video_start_datetime,
-    #                                          description=description))
-
     detection_with_tracker.run_detection(creator_id=creator_id, video_path=video_path,
-                                             video_start_datetime=video_start_datetime,
-                                             description=description,db=SyncSessionLocal)
+                                         video_start_datetime=video_start_datetime,
+                                         description=description, db=SyncSessionLocal)

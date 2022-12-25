@@ -6,7 +6,7 @@ class UsersBase(BaseModel):
     username: str
     name: str | None
     surname: str | None
-    phone_number: int | None
+    phone_number: str | None
     email: str | None
     is_super_user: bool | None
     is_admin: bool | None
