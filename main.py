@@ -1,3 +1,4 @@
+from starlette.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
@@ -13,6 +14,13 @@ from app.routes import answers as answers_routes
 from app.routes import detections as detections_routes
 
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware,
+                   allow_origins=["http://localhost:8081", "http://0.0.0.0:8081", "http://192.168.2.33:8081",
+                                  " http://localhost:8081"],
+                   allow_credentials=True,
+                   allow_methods=["*"],
+                   allow_headers=["*"], )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 

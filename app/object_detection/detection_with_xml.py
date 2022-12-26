@@ -21,8 +21,8 @@ def run_detection(creator_id: int, video_path: str, xml_path: str, description: 
     xml = XmlPars(xml_path=xml_path)
 
     detection_stream = DetectionStream(video_path=video_path,
-                                       yolo_path='detection_files/yolov4-tiny.weights',
-                                       cfg_path='detection_files/yolov4-tiny.cfg',
+                                       yolo_path='detection_files/yolov4-pothole.weights',
+                                       cfg_path='detection_files/yolov4-pothole.cfg',
                                        video_start_time=xml.get_start_datetime()).start()
 
     if not os.path.isdir(images_path):

@@ -4,7 +4,7 @@ from datetime import datetime
 
 import cv2 as cv
 from sqlalchemy.orm import Session
-from app.models.database import database
+
 from app.crud import tracker_data as tracker_data_crud
 from app.crud import detections as detections_crud
 from app.crud import detection_images as detection_images_crud
@@ -21,8 +21,8 @@ def run_detection(creator_id: int, video_path: str, video_start_datetime: dateti
 
     video_start_datetime = datetime.strptime(str(video_start_datetime), "%Y-%m-%dT%H:%M:%S")
     detection_stream = DetectionStream(video_path=video_path,
-                                       yolo_path='detection_files/yolov4-tiny.weights',
-                                       cfg_path='detection_files/yolov4-tiny.cfg',
+                                       yolo_path='detection_files/yolov4-pothole.weights',
+                                       cfg_path='detection_files/yolov4-pothole.cfg',
                                        video_start_time=video_start_datetime).start()
 
     if not os.path.isdir(images_path):
@@ -33,7 +33,7 @@ def run_detection(creator_id: int, video_path: str, video_start_datetime: dateti
         if detection_stream.size() > 0:
             frame, current_time = detection_stream.read()
 
-            tracker_data = tracker_data_crud.get_current_location(current_time,db=db)
+            tracker_data = tracker_data_crud.get_current_location(current_time, db=db)
 
             image = f"{images_path}/{datetime.now().strftime('%Y-%m-%d-%H-%M')}_{count_detect_img}.jpg"
             cv.imwrite(image, frame)

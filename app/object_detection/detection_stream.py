@@ -114,7 +114,6 @@ class DetectionStream:
         self.capture.release()
 
     def __tracking(self, frame, scores, boxes) -> None:
-
         detect = np.array(
             [[box[0], box[1], (box[0] + box[2]), (box[1] + box[3]), score] for (score, box) in
              zip(scores, boxes)])
