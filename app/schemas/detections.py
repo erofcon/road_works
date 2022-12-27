@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 
 class DetectionsBase(BaseModel):
-    description: str | None
-    creator_id: int
+    descriptions: str | None
+    creator_id: int | None
 
 
 class DetectionsCreate(DetectionsBase):
@@ -17,3 +17,7 @@ class Detections(DetectionsBase):
 
     class Config:
         orm_mode = True
+
+
+class DetectionsWithUserName(Detections):
+    username: str
