@@ -22,15 +22,9 @@ def create_detection_images(detection_images: detection_images_schemas.Detection
     except DataError:
         return False
 
-    # query = detections_model.detections.insert().values(
-    #     descriptions=detection.description,
-    #     create_datetime=datetime.now(),
-    #     creator_id=detection.creator_id
-    # )
-    #
-    # try:
-    #     model = db.execute(query)
-    #     db.commit()
-    #     return model.inserted_primary_key
-    # except DataError:
-    #     return False
+
+async def get_detection_images(detection_id: int) -> list[detection_images_schemas.DetectionImages]:
+    query = detection_images_model.detection_images.select().where(
+        detection_images_model.detection_images.c.detection_id == detection_id)
+
+    return await database.fetch_all(query=query)
