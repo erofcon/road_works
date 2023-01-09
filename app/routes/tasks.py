@@ -65,3 +65,15 @@ async def get_all_tasks(current_user: users_schemas.UsersBase = Depends(users_cr
 @router.get('/get_task')
 async def get_task(task_id: int, current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
     return await tasks_crud.get_task(task_id=task_id, current_user=current_user)
+
+
+@router.get('/close_task')
+async def get_task(task_id: int, current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
+    task = await tasks_crud.get_base_task(task_id)
+
+    if not task and not task.creator_id == current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+
+    await tasks_crud.close_task(task_id=task_id)
+
+    return await tasks_crud.get_task(task_id=task_id, current_user=current_user)

@@ -37,9 +37,9 @@ async def get_current_tasks(user_id: int) -> list[tasks_schemas.CurrentTasks]:
         CASE 
             WHEN t.is_done=True 
             THEN 'is_done'
-            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
-            THEN 'on_execution'
             WHEN t.is_done=False and t.lead_datetime > CURRENT_DATE
+            THEN 'on_execution'
+            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
             THEN 'is_expired'
             ELSE 'unknown'
             END AS task_status
@@ -68,9 +68,9 @@ async def get_expired_tasks(user_id: int) -> list[tasks_schemas.CurrentTasks]:
         CASE 
             WHEN t.is_done=True 
             THEN 'is_done'
-            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
-            THEN 'on_execution'
             WHEN t.is_done=False and t.lead_datetime > CURRENT_DATE
+            THEN 'on_execution'
+            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
             THEN 'is_expired'
             ELSE 'unknown'
             END AS task_status
@@ -99,9 +99,9 @@ async def get_all_tasks(user_id: int) -> list[tasks_schemas.CurrentTasks]:
         CASE 
             WHEN t.is_done=True 
             THEN 'is_done'
-            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
-            THEN 'on_execution'
             WHEN t.is_done=False and t.lead_datetime > CURRENT_DATE
+            THEN 'on_execution'
+            WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
             THEN 'is_expired'
             ELSE 'unknown'
             END AS task_status
@@ -119,6 +119,11 @@ async def get_all_tasks(user_id: int) -> list[tasks_schemas.CurrentTasks]:
     return await database.fetch_all(query=query)
 
 
+async def get_base_task(task_id: int) -> tasks_schemas.Tasks:
+    query = tasks_model.tasks.select().where(tasks_model.tasks.c.id == task_id)
+    return await database.fetch_one(query=query)
+
+
 async def get_task(task_id: int, current_user: users_schemas.UsersBase):
     task_query = f"""
             SELECT 
@@ -127,9 +132,9 @@ async def get_task(task_id: int, current_user: users_schemas.UsersBase):
             CASE 
                 WHEN t.is_done=True 
                 THEN 'is_done'
-                WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
-                THEN 'on_execution'
                 WHEN t.is_done=False and t.lead_datetime > CURRENT_DATE
+                THEN 'on_execution'
+                WHEN t.is_done=False and t.lead_datetime < CURRENT_DATE
             THEN 'is_expired'
                 ELSE 'unknown'
                 END AS task_status
@@ -181,3 +186,11 @@ async def get_task(task_id: int, current_user: users_schemas.UsersBase):
     task_query.task_executor = users_schemas.UsersBase(**task_executor)
 
     return task_query
+
+
+async def close_task(task_id: int):
+    query = tasks_model.tasks.update().where(tasks_model.tasks.c.id == task_id).values(
+        is_done=True
+    )
+
+    return await database.execute(query=query)
