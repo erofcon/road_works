@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Form, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.crud import users as users_crud
@@ -16,9 +16,9 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"}, )
 
-    return token_crud.create_access_token(data={'sub': user.username, 'is_super_user': user.is_super_user})
+    return token_crud.create_access_token(data={'sub': user.username, 'id': user.id})
 
 
 @router.post('/refresh', response_model=token_schemas.Token)
-async def refresh_token(token: str, username: str):
+async def refresh_token(token: str = Form(), username: str = Form()):
     return token_crud.create_refresh_token(token=token, username=username)

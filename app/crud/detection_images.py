@@ -28,3 +28,10 @@ async def get_detection_images(detection_id: int) -> list[detection_images_schem
         detection_images_model.detection_images.c.detection_id == detection_id)
 
     return await database.fetch_all(query=query)
+
+
+async def delete_detection_images(detection_image_id: int) -> bool:
+    query = detection_images_model.detection_images.delete().where(
+        detection_images_model.detection_images.c.id == detection_image_id)
+
+    return await database.execute(query=query)

@@ -96,7 +96,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> users_schemas
     return user
 
 
-async def get_related_users(group_id: int) -> list[users_schemas.User]:
+async def get_related_executor_users(group_id: int) -> list[users_schemas.User]:
     query = text(f"""
         SELECT 
             u.id, u.username 

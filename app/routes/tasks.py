@@ -15,8 +15,14 @@ router = APIRouter()
 
 
 @router.post('/create_task')
-async def create_task(task: tasks_schemas.CreateTask = Depends(), files: list[UploadFile] | None = File(None),
+async def create_task(description: str = Form(default=None), lead_datetime: datetime = Form(),
+                      latitude: float = Form(default=None), longitude: float = Form(default=None),
+                      executor_id: int = Form(), group_id: int = Form(),
+                      files: list[UploadFile] | None = File(None),
                       current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
+    task = tasks_schemas.CreateTask(description=description, lead_datetime=lead_datetime, latitude=latitude,
+                                    longitude=longitude, executor_id=executor_id, group_id=group_id)
+
     task_id = await tasks_crud.create_task(task=task, creator_id=current_user.id)
     if not task_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
@@ -54,3 +60,8 @@ async def get_expired_tasks(current_user: users_schemas.UsersBase = Depends(user
 @router.get('/all_tasks', response_model=list[tasks_schemas.CurrentTasks])
 async def get_all_tasks(current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
     return await tasks_crud.get_all_tasks(current_user.id)
+
+
+@router.get('/get_task')
+async def get_task(task_id: int, current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
+    return await tasks_crud.get_task(task_id=task_id, current_user=current_user)

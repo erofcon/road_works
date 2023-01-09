@@ -17,7 +17,9 @@ from app.routes import detection_images as detection_images_routes
 app = FastAPI()
 
 app.add_middleware(CORSMiddleware,
-                   allow_origins=["http://localhost:8081", "http://0.0.0.0:8081", "http://192.168.2.33:8081",
+                   allow_origins=["http://localhost:8081", "http://0.0.0.0:8081", "http://192.168.0.10:8081",
+                                  "http://192.168.2.33:8081",
+                                  "http://192.168.0.10:8081",
                                   " http://localhost:8081"],
                    allow_credentials=True,
                    allow_methods=["*"],

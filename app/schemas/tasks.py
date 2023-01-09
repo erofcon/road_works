@@ -36,3 +36,18 @@ class CurrentTasks(BaseModel):
     creator_id: int | None
     executor_id: int | None
     task_status: str
+
+
+class TaskQuery(BaseModel):
+    id: int
+    description: str | None
+    create_datetime: datetime | None
+    lead_datetime: datetime | None
+    latitude: float | None
+    longitude: float | None
+    task_status: str
+    group_id: int | None
+    group_name: str | None
+    task_images: list | None
+    task_creator: dict | None
+    task_executor: dict | None

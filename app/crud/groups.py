@@ -31,7 +31,7 @@ async def get_related_groups(user_id: int) -> list[groups_schemas.Groups]:
             gr.id, gr.name, gr.create_datetime 
         FROM 
             users u 
-        LEFT JOIN 
+        INNER JOIN 
             users_groups ug 
         ON 
             ug.user_id = u.id

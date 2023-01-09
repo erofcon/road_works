@@ -17,6 +17,7 @@ async def create_user(user: users_schemas.CreateUser):
     return HTTPException(status_code=status.HTTP_201_CREATED)
 
 
-@router.get('/related_user', response_model=list[users_schemas.User])
-async def get_related_user(group_id: int, current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
-    return await users_crud.get_related_users(group_id=group_id)
+@router.get('/get_related_executor_users', response_model=list[users_schemas.User])
+async def get_related_executor_users(group_id: int,
+                                     current_user: users_schemas.UsersBase = Depends(users_crud.get_current_user)):
+    return await users_crud.get_related_executor_users(group_id=group_id)
