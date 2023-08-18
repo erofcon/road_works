@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+
+  redis_db:
+    container_name: "redis_db"
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+
+  postgresql_db:
+    container_name: "postgresql_db"
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "test_db"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "qwerty123"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  #  postgresql_db:
+  #    container_name: "postgresql_db"
+  #    image: postgres:11.17-alpine
+  #    restart: always
+  #    environment:
+  #      TZ: "Europe/Moscow"
+  #      POSTGRES_DB: "test_db"
+  #      POSTGRES_USER: "user"
+  #      POSTGRES_PASSWORD: "qwerty123"
+  #      PGDATA: "/var/lib/postgresql/data/pgdata"
+  #
+  #    volumes:
+  #      - ../init postgres docker:/docker-entrypoint-initdb.d
+  #      - ../:/var/lib/postgresql/data
+  #
+  #    ports:
+  #      - "5432:5432"
+
+  adminer:
+    container_name: "adminer"
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+
+    depends_on:
+      - postgresql_db
+
+volumes:
+  db_volume:
