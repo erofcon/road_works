@@ -1,3 +1,5 @@
+import os
+
 from starlette.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -16,11 +18,10 @@ from app.routes import answer as answers_routes
 from app.routes import detection as detections_routes
 from app.routes import detection_images as detection_images_routes
 from app.routes import map as map_routes
+from app.routes import car as car_routes
 
-import os
 script_dir = os.path.dirname(__file__)
 st_abs_file_path = os.path.join(script_dir, "static/")
-
 
 app = FastAPI()
 
@@ -36,12 +37,13 @@ app.add_middleware(CORSMiddleware,
                                   "http://0.0.0.0:5173",
                                   "http://localhost:8081",
                                   "http://192.168.10.218:8081",
-                                  " http://localhost:5173"],
+                                  "http://127.0.0.1:43630",
+                                  "http://192.168.10.144:8080",
+                                  "http://localhost:5173"],
                    allow_credentials=True,
                    allow_methods=["*"],
                    allow_headers=["*"], )
 
-#app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/static", StaticFiles(directory=st_abs_file_path), name="static")
 
 app.include_router(router=users_routes.router)
@@ -54,6 +56,7 @@ app.include_router(router=answers_routes.router)
 app.include_router(router=detections_routes.router)
 app.include_router(router=detection_images_routes.router)
 app.include_router(router=map_routes.router)
+app.include_router(router=car_routes.router)
 
 
 @app.on_event('startup')

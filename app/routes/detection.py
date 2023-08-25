@@ -42,6 +42,7 @@ async def run_detection_with_xml(video_file: UploadFile, xml_file: UploadFile, d
 
 @router.post('/run_detection_with_tracker')
 async def run_detection_with_tracker(video_file: UploadFile, video_start_datetime: datetime = Form(),
+                                     car_id: int = Form(),
                                      description: str = Form(default=None),
                                      current_user: user_schemas.UserWithCheckCreatorStatus = Depends(
                                          user_crud.get_current_user)):
